@@ -29,7 +29,8 @@ Following you can find the steps used to install CCS on **Ubuntu**.
 - pip install -r requirements.txt
 - configure database section in egse.cfg file:
   * line 14: user = ccs
-  * line 16: password = YourPassword
+  * supply the password through the `MYSQL_PASSWORD` environment variable, or
+    set line 16 locally without committing the secret
   * also have a look into the paths, especially line 5 obsw
   * change line 11: COMETINTERCEPTOR
 - make confignator
@@ -208,3 +209,10 @@ If there is a need to run the python debugger, most modules can also be run by e
 If an incoming packet is corrupted (perhaps because a byte was long on the SpaceWire connection), the CCS will go ut of synch with the incoming telemetry flow and might freeze. 
 
 The simplest way to resume normal operation is to clear the pool (red button with white cross) but this causes the loss of the tmpool data. An alternative solution (not yet tested) might be as follows: disconnect from the socket, e.g., via the Poolmanager GUI, but without closing the app window; then just reconnect with your usual commands; a new packet parser instance will be created (but it might be necessary to re-open the Poolviewer as well for the auto-update to work again).
+
+
+# DEV CONTAINER ON MAC
+
+An Ubuntu 24.04 development container with GTK 3 and XQuartz GUI forwarding is
+provided in `.devcontainer/`. See `.devcontainer/README.md` for the one-time Mac
+setup, interpreter selection, and GUI smoke test.

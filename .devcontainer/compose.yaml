@@ -1,0 +1,47 @@
+services:
+  database:
+    image: mysql:8.4
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    restart: unless-stopped
+    volumes:
+      - ccs-mysql-data:/var/lib/mysql
+      - ./mysql-init.sql:/docker-entrypoint-initdb.d/10-ccs-grants.sql:ro
+
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Docker Desktop exposes the macOS host under this name. XQuartz listens
+      # on display 0 after the one-time setup described in README.md.
+      DISPLAY: host.docker.internal:0
+      DBUS_SESSION_BUS_ADDRESS: unix:path=/tmp/ccs-session-bus
+      # Do not expose the database administrator password to application
+      # processes. An environment entry overrides the value from env_file.
+      MYSQL_ROOT_PASSWORD: ""
+      GDK_BACKEND: x11
+      LIBGL_ALWAYS_INDIRECT: "1"
+      NO_AT_BRIDGE: "1"
+      PYTHONPATH: /workspace/Ccs:/workspace/Tst
+    init: true
+    # README_CoCa.md configures MySQL at 127.0.0.1. Sharing the database
+    # service's network namespace preserves that configuration unchanged.
+    network_mode: service:database
+    volumes:
+      - ..:/workspace:cached
+    working_dir: /workspace
+
+volumes:
+  ccs-mysql-data:

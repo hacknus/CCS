@@ -76,3 +76,11 @@ The CCS tools should generally also work on a Mac, the installation process will
     pip install mysqlclient
 
 - potentially, versions have to be specified for some packages in requirements.txt (sqlalchemy==1.4, ipython==7.12.0)
+
+
+# DEV CONTAINER ON MAC
+
+An Ubuntu 24.04 development container with GTK 3 and XQuartz GUI forwarding is
+provided in `.devcontainer/` for PyCharm and Visual Studio Code. See
+`.devcontainer/README.md` for the one-time Mac setup, IDE connection steps,
+interpreter selection, and GUI smoke test.
