@@ -171,3 +171,5 @@ dmypy.json
 cython_debug/
 
 /Tst/confignator/doc/source/_apidocfiles/
+*.tmpool
+mib_dat_exports*
