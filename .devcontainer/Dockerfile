@@ -34,6 +34,7 @@ RUN apt-get update \
         libnotify-dev \
         librsvg2-common \
         libvte-2.91-0 \
+        openssh-client \
         pkg-config \
         procps \
         python3 \
